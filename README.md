@@ -29,10 +29,10 @@ You need Nest CLI
 $ npm i -g @nestjs/cli
 ```
 
-Configure and start Database
+Configure and start Database (in the root project)
 
 ```bash
-$ docker-compose up -d
+docker-compose up -d
 ```
 
 Clone `.env.template` file and rename to `.env`
