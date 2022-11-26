@@ -41,4 +41,9 @@ export class CreateProductDto {
   @IsString()
   @IsIn(['men', 'women', 'kid', 'unisex'])
   gender: string;
+
+  @IsString({ each: true })
+  @IsArray()
+  @ArrayNotEmpty({ message: `At least one tag` })
+  tags: string[];
 }
