@@ -87,6 +87,11 @@ You can find all endpoints here:
 - Class Validator
 - Class Transformer
 - Results pagination
+- Tables relationships (one to many | many to one)
+- Query Runner
+- Query Builder
+- Transactions
+- Commits and rollbacks
 
 ## Stay in touch
 

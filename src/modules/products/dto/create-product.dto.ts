@@ -46,4 +46,9 @@ export class CreateProductDto {
   @IsArray()
   @ArrayNotEmpty({ message: `At least one tag` })
   tags: string[];
+
+  @IsString({ each: true })
+  @IsArray()
+  @ArrayNotEmpty({ message: `At least one tag` })
+  images?: string[];
 }

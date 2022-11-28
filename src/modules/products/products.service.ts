@@ -6,17 +6,27 @@ import { validate as isUUID } from 'uuid';
 import { PaginationQueryDto } from 'src/common/dto';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { Product } from './entities/product.entity';
+import { ProductImage, Product } from './entities';
 
 @Injectable()
 export class ProductsService {
   constructor(
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
+    @InjectRepository(ProductImage)
+    private readonly productImageRepository: Repository<ProductImage>,
   ) {}
 
   async create(createProductDto: CreateProductDto): Promise<Product> {
-    const product: Product = this.productRepository.create(createProductDto);
+    const { images = [], ...rest } = createProductDto;
+
+    const product: Product = this.productRepository.create({
+      ...rest,
+      images: images.map(
+        (image): ProductImage =>
+          this.productImageRepository.create({ url: image }),
+      ),
+    });
     return this.productRepository.save(product);
   }
 
@@ -27,6 +37,9 @@ export class ProductsService {
     const [result, total] = await this.productRepository.findAndCount({
       take: limit,
       skip: offset,
+      relations: {
+        images: true,
+      },
     });
     return { total, result };
   }
@@ -38,11 +51,12 @@ export class ProductsService {
         id: search,
       });
     } else {
-      const customQuery = this.productRepository.createQueryBuilder();
+      const customQuery = this.productRepository.createQueryBuilder('product');
       product = await customQuery
         .where('slug =:slug', {
           slug: search,
         })
+        .leftJoinAndSelect('product.images', 'productImages')
         .getOne();
     }
     if (!product) throw new NotFoundException(`Product not found`);
@@ -53,6 +67,7 @@ export class ProductsService {
     const product: Product = await this.productRepository.preload({
       id,
       ...updateProductDto,
+      images: [],
     });
     if (!product) throw new NotFoundException(`Product not found`);
     return this.productRepository.save(product);
