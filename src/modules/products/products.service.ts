@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DataSource, DeleteResult, Repository } from 'typeorm';
 import { validate as isUUID } from 'uuid';
 
 import { PaginationQueryDto } from 'src/common/dto';
@@ -15,6 +15,7 @@ export class ProductsService {
     private readonly productRepository: Repository<Product>,
     @InjectRepository(ProductImage)
     private readonly productImageRepository: Repository<ProductImage>,
+    private readonly datasource: DataSource,
   ) {}
 
   async create(createProductDto: CreateProductDto): Promise<Product> {
@@ -63,14 +64,34 @@ export class ProductsService {
     return product;
   }
 
-  async update(id: string, updateProductDto: UpdateProductDto) {
+  async update(
+    id: string,
+    updateProductDto: UpdateProductDto,
+  ): Promise<Product> {
+    const { images, ...rest } = updateProductDto;
     const product: Product = await this.productRepository.preload({
       id,
-      ...updateProductDto,
-      images: [],
+      ...rest,
     });
     if (!product) throw new NotFoundException(`Product not found`);
-    return this.productRepository.save(product);
+    // Create query runner
+    const queryRunner = this.datasource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    if (images) {
+      await queryRunner.manager.delete(ProductImage, { product: { id } });
+      product.images = images.map(
+        (image): ProductImage =>
+          this.productImageRepository.create({ url: image }),
+      );
+    } else {
+    }
+
+    await queryRunner.manager.save(product);
+    await queryRunner.commitTransaction();
+    await queryRunner.release();
+    return product;
   }
 
   async remove(id: string): Promise<{ message: string }> {
@@ -79,5 +100,10 @@ export class ProductsService {
     return {
       message: `The '${product.title}' product has been deleted`,
     };
+  }
+
+  async removeAll(): Promise<DeleteResult> {
+    const query = this.productRepository.createQueryBuilder('product');
+    return await query.delete().where({}).execute();
   }
 }

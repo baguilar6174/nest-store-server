@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 import { Product } from './product.entity';
 
-@Entity({ name: 'tbl_image' })
+@Entity({ name: 'tbl_product_images' })
 export class ProductImage {
   @PrimaryGeneratedColumn('increment')
   id: number;
@@ -18,6 +18,7 @@ export class ProductImage {
   @ManyToOne(
     (): typeof Product => Product,
     (product): ProductImage[] => product.images,
+    { onDelete: 'CASCADE' },
   )
   @JoinColumn({ name: 'product_id' })
   product: Product;

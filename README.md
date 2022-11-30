@@ -56,6 +56,12 @@ $ yarn start:prod
 
 You can find all endpoints here:
 
+```
+Populate DB
+
+http://localhost:300/api/v1/seed
+```
+
 ## My process
 
 ### Built with
