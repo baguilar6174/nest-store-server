@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductsModule } from './modules/products/products.module';
 import { SeedModule } from './modules/seed/seed.module';
+import { FilesModule } from './modules/files/files.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { SeedModule } from './modules/seed/seed.module';
     }),
     ProductsModule,
     SeedModule,
+    FilesModule,
   ],
   controllers: [],
   providers: [],
