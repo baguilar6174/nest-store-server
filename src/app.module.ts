@@ -1,6 +1,9 @@
+import { join } from 'path';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ServeStaticModule } from '@nestjs/serve-static';
+
 import { ProductsModule } from './modules/products/products.module';
 import { SeedModule } from './modules/seed/seed.module';
 import { FilesModule } from './modules/files/files.module';
@@ -17,6 +20,9 @@ import { FilesModule } from './modules/files/files.module';
       database: process.env.DB_NAME,
       autoLoadEntities: true,
       synchronize: true,
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
     }),
     ProductsModule,
     SeedModule,

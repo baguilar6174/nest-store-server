@@ -1,8 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { existsSync } from 'fs';
+import { join } from 'path';
 
 @Injectable()
 export class FilesService {
-  uploadFile() {
-    return 'This action upload a new file';
+  getStaticProductImage(name: string): string {
+    const path = join(__dirname, '../../../static/uploads', name);
+    if (!existsSync(path)) {
+      throw new BadRequestException(`No product found with image ${name}`);
+    }
+    return path;
   }
 }
