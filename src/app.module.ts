@@ -7,6 +7,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { ProductsModule } from './modules/products/products.module';
 import { SeedModule } from './modules/seed/seed.module';
 import { FilesModule } from './modules/files/files.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { FilesModule } from './modules/files/files.module';
     ProductsModule,
     SeedModule,
     FilesModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],

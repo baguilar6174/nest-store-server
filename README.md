@@ -99,6 +99,16 @@ http://localhost:300/api/v1/seed
 - Transactions
 - Commits and rollbacks
 - Using File System
+- Authentication
+- Authorization
+- Json Web Tokens
+- Password Hash
+- Nest Passport
+- Protect endpoints
+- Custom Method Decorators
+- Custom Class Decorators
+- Custom Property Decorators
+- Using Tokens
 
 ## Stay in touch
 
