@@ -25,21 +25,21 @@ export class AuthService {
     });
     await this.userRepository.save(user);
     delete user.password;
-    return { ...user, token: this.getJwtToken({ email: user.email }) };
+    return { ...user, token: this.getJwtToken({ id: user.id }) };
   }
 
   async signin(loginUserDto: LoginUserDto) {
     const { password, email } = loginUserDto;
     const user = await this.userRepository.findOne({
       where: { email },
-      select: { email: true, password: true },
+      select: { email: true, password: true, id: true },
     });
     if (!user) throw new UnauthorizedException(`Credentials are not valid`);
     const isValidPassword = await this.checkPassword(password, user.password);
     if (!isValidPassword) {
       throw new UnauthorizedException(`Credentials are not valid`);
     }
-    return { ...user, token: this.getJwtToken({ email: user.email }) };
+    return { ...user, token: this.getJwtToken({ id: user.id }) };
   }
 
   private async hashPassword(password: string): Promise<string> {
