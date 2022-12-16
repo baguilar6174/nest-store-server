@@ -32,6 +32,12 @@ export class AuthController {
     return await this.authService.signin(loginUserDto);
   }
 
+  @Get('userInfo')
+  @Auth()
+  async userInfo(@GetUser() user: User) {
+    return await this.authService.userInfo(user);
+  }
+
   @Get('private')
   @UseGuards(AuthGuard())
   testPrivateRoute(

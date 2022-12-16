@@ -110,6 +110,14 @@ http://localhost:300/api/v1/seed
 - Custom Property Decorators
 - Using Tokens
 
+## TODO
+
+- Use plainToInstance to return a entity with custom fields
+- Use constants (delete magic strings)
+- Api documentation
+- Refresh token endpoint
+- Timestamps in entities
+
 ## Stay in touch
 
 - Website - [www.bryan-aguilar.com](https://www.bryan-aguilar.com/)

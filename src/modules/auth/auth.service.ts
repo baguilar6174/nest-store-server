@@ -42,6 +42,10 @@ export class AuthService {
     return { ...user, token: this.getJwtToken({ id: user.id }) };
   }
 
+  async userInfo(user: User) {
+    return { ...user, token: this.getJwtToken({ id: user.id }) };
+  }
+
   private async hashPassword(password: string): Promise<string> {
     const salt = await bcrypt.genSalt(10);
     return await bcrypt.hash(password, salt);
