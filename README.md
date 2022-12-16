@@ -54,13 +54,30 @@ $ yarn start:prod
 
 ## Endpoints
 
-You can find all endpoints here:
-
 ```
-Populate DB
+Populate DB (users and products)
 
 http://localhost:300/api/v1/seed
 ```
+
+You can find all endpoints here:
+
+```
+Swagger documentation
+
+http://localhost:3000/api
+```
+
+<table>
+  <tr>
+    <td>Swagger documentation</td>
+  </tr>
+  <tr>
+    <td align="center" valign="center"><img src="./media/swagger.png" width="75%"></td>
+  </tr>
+</table>
+
+Also you can use [`Postman Collention`](./media/postman_collection.json)
 
 ## My process
 
@@ -109,12 +126,14 @@ http://localhost:300/api/v1/seed
 - Custom Class Decorators
 - Custom Property Decorators
 - Using Tokens
+- Postman documentation
+- Nest Swagger
 
 ## TODO
 
 - Use plainToInstance to return a entity with custom fields
 - Use constants (delete magic strings)
-- Api documentation
+- Api documentation (using Swagger decorators)
 - Refresh token endpoint
 - Timestamps in entities
 

@@ -9,6 +9,8 @@ import {
   Query,
   ParseUUIDPipe,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger/dist';
+import { ApiResponse } from '@nestjs/swagger/dist/decorators';
 
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -19,12 +21,20 @@ import { Auth, GetUser } from '../auth/decorators';
 import { ValidRoles } from '../auth/interfaces';
 import { User } from '../auth/entities/user.entity';
 
+@ApiTags('Products')
 @Controller('products')
 // @Auth()
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Post()
+  @ApiResponse({
+    status: 201,
+    description: `Product was created`,
+    type: Product,
+  })
+  @ApiResponse({ status: 400, description: `Bad request` })
+  @ApiResponse({ status: 403, description: `Forbidden (Token related)` })
   @Auth()
   create(
     @Body() createProductDto: CreateProductDto,

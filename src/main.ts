@@ -1,5 +1,7 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './common/filters/http-exception/http-exception.filter';
 import { TimeoutInterceptor } from './common/interceptors/timeout/timeout.interceptor';
@@ -20,6 +22,15 @@ async function bootstrap(): Promise<void> {
       },
     }),
   );
+  const config = new DocumentBuilder()
+    .setTitle('Fake Store Api')
+    .setDescription(
+      'This API Rest presents a product server for an ecommerce with Authentication and Authorization using PostgreSQL database relationships.',
+    )
+    .setVersion('1.0')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
   await app.listen(process.env.PORT);
 }
 bootstrap();

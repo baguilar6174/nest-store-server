@@ -1,0 +1,363 @@
+{
+	"info": {
+		"_postman_id": "25049d78-e656-4c2d-9e4b-ea13499d5825",
+		"name": "fakestore",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6722962"
+	},
+	"item": [
+		{
+			"name": "[seed] - Populate DB",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/v1/seed",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"seed"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "2",
+							"disabled": true
+						},
+						{
+							"key": "offset",
+							"value": "0",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[auth] - User signup",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let resp = pm.response.json();\r",
+							"console.log(resp);\r",
+							"\r",
+							"let token = resp.token;\r",
+							"pm.environment.set(\"token\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"new@test.com\",\r\n    \"fullname\": \"Bryan Aguilar\",\r\n    \"password\": \"Bryan123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/v1/auth/signup",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[auth] - User signin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let resp = pm.response.json();\r",
+							"console.log(resp);\r",
+							"\r",
+							"let token = resp.token;\r",
+							"pm.environment.set(\"token\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"admin@test.com\",\r\n    \"password\": \"Admin123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/v1/auth/signin",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"signin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[auth] - Get user information",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/v1/auth/userInfo",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"userInfo"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "2",
+							"disabled": true
+						},
+						{
+							"key": "offset",
+							"value": "0",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[file] - Upload product image",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/GIGABYTE G15/Desktop/personal/portfolio/src/logo.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/api/v1/files/product",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"files",
+						"product"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[file] - Get image",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/GIGABYTE G15/Desktop/personal/portfolio/src/logo.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/api/v1/files/product/1473809-00-A_1_2000.jpg",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"files",
+						"product",
+						"1473809-00-A_1_2000.jpg"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[product] - Create new product",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Bryan's Shirt\",\r\n    \"sizes\": [\r\n        \"SM\",\r\n        \"M\",\r\n        \"L\"\r\n    ],\r\n    \"gender\": \"men\",\r\n    \"tags\": [\"shirt\"],\r\n    \"images\": [\"image1\", \"image2\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/v1/products",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[product] - Get all products",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/v1/products",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"products"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "2",
+							"disabled": true
+						},
+						{
+							"key": "offset",
+							"value": "0",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[product] - Get product by id | slug",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/v1/products/bryan_s_shirt",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"products",
+						"bryan_s_shirt"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[product] - Update product",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"price\": 150.2,\r\n    \"tags\": [\"clothes\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/v1/products/6352553e-f7a8-47dd-a484-2313acd404a7",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"products",
+						"6352553e-f7a8-47dd-a484-2313acd404a7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[product] - Delete product by id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/v1/products/b97c1d7a-22ea-4ff2-b1b3-ffe138f66f3d",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"products",
+						"b97c1d7a-22ea-4ff2-b1b3-ffe138f66f3d"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
